@@ -12,7 +12,7 @@ class ContolPendulum(MuJoCoBase):
 
     def reset(self):
         # Set initial angle of pendulum
-        self.data.qpos[0] = np.pi/2
+        self.data.qpos[0] = 0.0
 
         # Set camera configuration
         self.cam.azimuth = 90.0
@@ -34,10 +34,10 @@ class ContolPendulum(MuJoCoBase):
         if self.actuator_type == "torque":
             self.model.actuator_gainprm[0, 0] = 1
             self.data.ctrl[0] = -10 * \
-                (self.data.sensordata[0] - 0.0) - \
-                1 * (self.data.sensordata[1] - 0.0)
+                (self.data.sensordata[0] - np.pi) - \
+                1 * (self.data.sensordata[1] - np.pi)
         elif self.actuator_type == "servo":
-            kp = 10.0
+            kp = 20.0
             self.model.actuator_gainprm[1, 0] = kp
             self.model.actuator_biasprm[1, 1] = -kp
             self.data.ctrl[1] = -0.5
